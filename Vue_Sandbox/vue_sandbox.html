@@ -11,18 +11,31 @@
 
 <body>
     <div id="app">
-        <p>{{ sayHello() }} - <a href="{{ link }}">Google</a></p>
+        <p v-once>{{ title }}</p>
+        <hr>
+        <p>{{ sayHello() }} - <a v-bind:href="link">Google</a></p>
+        <hr>
+        <p v-html="finishedLink"></p>
+        <hr>
+        <button v-on:click="increase">+1</button>
+        <p>{{ counter }}</p>
     </div>
     <script>
         new Vue({
             el: '#app',
             data: {
                 title: 'Hello World!',
-                link: 'http://google.com'
+                link: 'http://google.com',
+                finishedLink: '<a href="http://google.com">Google</a>',
+                counter: 0
             },
             methods: {
                 sayHello: function () {
+                    this.title = 'Hello!'
                     return this.title;
+                },
+                increase: function () {
+                    this.counter++;
                 }
             }
         });
