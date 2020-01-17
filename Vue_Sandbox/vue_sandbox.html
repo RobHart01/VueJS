@@ -17,7 +17,7 @@
         <hr>
         <p v-html="finishedLink"></p>
         <hr>
-        <button v-on:click="increase">+1</button>
+        <button v-on:click="increase(2, $event)">+1</button>
         <p>{{ counter }}</p>
         <hr>
         <p v-on:mousemove="updateCoordinate">Coordinates: {{ x }} / {{ y }}</p>
@@ -38,8 +38,8 @@
                     this.title = 'Hello!'
                     return this.title;
                 },
-                increase: function () {
-                    this.counter++;
+                increase: function (step, event) {
+                    this.counter += step;
                 },
                 updateCoordinate: function(event) {
                     this.x = event.clientX;
