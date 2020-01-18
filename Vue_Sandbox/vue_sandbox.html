@@ -13,28 +13,39 @@
     <div id="app">
         <p v-once>{{ title }}</p>
         <hr>
-        <p>{{ sayHello() }} - <a v-bind:href="link">Google</a></p>
+        <p>{{ sayHello() }} - <a :href="link">Google</a></p>
         <hr>
         <p v-html="finishedLink"></p>
         <hr>
-        <button v-on:click="increase(2, $event)">+1</button>
-        <p>{{ counter }}</p>
+        <button @click="counter++">+1</button>
+        <button @click="counter--">-1</button>
+        <p>Counter: {{ counter }}</p>
+        <p>Result: {{ result() }} | {{ output }}</p>
         <hr>
-        <p v-on:mousemove="updateCoordinate">Coordinates: {{ x }} / {{ y }} - <span v-on:mousemove.stop.prevent>DEAD SPOT</span></p>
+        <button @click="increaseMore(2, $event)">+2</button>
+        <p>Counter: {{ counter2 * 2 }}</p>
+        <p>Result: {{ counter2 * 2 > 10 ? 'Greater than 10' : 'Smaller than 10'}}</p>
+        <hr>
+        <p @mousemove="updateCoordinate">Coordinates: {{ x }} / {{ y }} - <span @mousemove.stop.prevent>DEAD
+                SPOT</span></p>
         <hr>
         <p>Key Modifiers</p>
-        <input type="text" v-on:keyup.enter="alertMe">
+        <input type="text" @keyup.enter="alertMe">
         <hr>
         <p>Alert Button</p>
-        <button v-on:click="alertMe">Alert!</button>
+        <button @click="alertMe">Alert!</button>
         <hr>
         <p>Type for immediate response</p>
-        <input type="text" v-on:keydown="value = $event.target.value">
+        <input type="text" @keydown="value = $event.target.value">
         <p>{{ value }}</p>
         <hr>
         <p>Press enter for response</p>
-        <input type="text" v-on:keydown.enter="value2 = $event.target.value">
-        <p>{{ value2 }}</p>        
+        <input type="text" @keydown.enter="value2 = $event.target.value">
+        <p>{{ value2 }}</p>
+        <hr>
+        <p>2 Way Databinding</p>
+        <input type="text" v-model="name">
+        <p>{{ name }}</p>
     </div>
     <script>
         new Vue({
@@ -44,27 +55,54 @@
                 link: 'http://google.com',
                 finishedLink: '<a href="http://google.com">Google</a>',
                 counter: 0,
+                counter2: 0,
                 x: 0,
                 y: 0,
                 value: '',
                 value2: '',
+                name: 'Robert',
             },
+            computed: {
+                output: function() {
+                    return this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
+                }
+            },
+            watch: {
+                counter: function(value) {
+                    var vm = this;
+                    setTimeout(function () {
+                        vm.counter = 0;
+                    }, 3000);
+                }
+            }
+            ,
             methods: {
                 sayHello: function () {
                     this.title = 'Hello!'
                     return this.title;
                 },
-                increase: function (step, event) {
-                    this.counter += step;
+                // increase: function () {
+                //     this.counter++;
+                //     this.result = this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
+                // },
+                // decrease: function () {
+                //     this.counter--;
+                //     this.result = this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
+                // },
+                result() {
+                    return this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
                 },
-                updateCoordinate: function(event) {
+                increaseMore: function (step, event) {
+                    this.counter2 += step;
+                },
+                updateCoordinate: function (event) {
                     this.x = event.clientX;
                     this.y = event.clientY
                 },
                 // dummy: function(event) {
                 //     event.stopPropagation();
                 // }
-                alertMe: function() {
+                alertMe: function () {
                     alert('Alert!');
                 }
             }
