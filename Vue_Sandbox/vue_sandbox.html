@@ -46,6 +46,30 @@
         <p>2 Way Databinding</p>
         <input type="text" v-model="name">
         <p>{{ name }}</p>
+        <hr>
+        <p v-if="show">You can see me?</p>
+        <p v-else>Now you see me!</p>
+        <template v-if="show">
+            <h1>Heading</h1>
+            <p>Inside a template</p>
+        </template>
+        <p v-show="show">Do you see me?</p>
+        <button @click="show = !show">Switch</button>
+        <hr>
+        <ul>
+            <li v-for="(ingredient, i) in ingredients">{{ ingredient }} ({{ i }})</li>
+        </ul>
+        <hr>
+        <ul>
+            <li v-for="person in persons">
+                <div v-for="(values, key, index) in person">{{ key }}: {{ values }} ({{ index }})</div>
+            </li>
+        </ul>
+        <hr>
+        <template v-for="(ingredient, index) in ingredients">
+            <h1>{{ ingredient }}</h1>
+            <p>{{ index }}</p>
+        </template>
     </div>
     <script>
         new Vue({
@@ -61,34 +85,38 @@
                 value: '',
                 value2: '',
                 name: 'Robert',
+                show: true,
+                ingredients: ['meat', 'fruit', 'cookies'],
+                persons: [{
+                        name: 'Robert',
+                        age: 22,
+                        color: 'yellow'
+                    },
+                    {
+                        name: 'Alex',
+                        age: 21,
+                        color: 'red'
+                    }
+                ]
             },
             computed: {
-                output: function() {
+                output: function () {
                     return this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
                 }
             },
             watch: {
-                counter: function(value) {
+                counter: function (value) {
                     var vm = this;
                     setTimeout(function () {
                         vm.counter = 0;
                     }, 3000);
                 }
-            }
-            ,
+            },
             methods: {
                 sayHello: function () {
                     this.title = 'Hello!'
                     return this.title;
                 },
-                // increase: function () {
-                //     this.counter++;
-                //     this.result = this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
-                // },
-                // decrease: function () {
-                //     this.counter--;
-                //     this.result = this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
-                // },
                 result() {
                     return this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
                 },
@@ -99,12 +127,20 @@
                     this.x = event.clientX;
                     this.y = event.clientY
                 },
+                alertMe: function () {
+                    alert('Alert!');
+                },
+                // increase: function () {
+                //     this.counter++;
+                //     this.result = this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
+                // },
+                // decrease: function () {
+                //     this.counter--;
+                //     this.result = this.counter > 5 ? 'Greater than 5' : 'Smaller than 5'
+                // },
                 // dummy: function(event) {
                 //     event.stopPropagation();
                 // }
-                alertMe: function () {
-                    alert('Alert!');
-                }
             }
         });
     </script>
